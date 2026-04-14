@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xxo Estates — Premium Real Estate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --white:#fff;--soft-gray:#F5F5F7;--black:#1D1D1F;--gold:#C6A969;--gold-lt:#E8D5A3;
+  --txt:#000;--muted:#6E6E73;--border:rgba(0,0,0,.08);
+  --r1:10px;--r2:16px;--r3:24px;--r4:32px;
+  --ease:.36s cubic-bezier(.25,.46,.45,.94);--fast:.2s ease;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:#fff;color:#000;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:400}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 5%;height:72px;display:flex;align-items:center;justify-content:space-between;transition:background var(--ease),box-shadow var(--ease)}
+nav.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:#fff;text-decoration:none;letter-spacing:.04em;transition:color var(--ease)}
+nav.scrolled .nav-logo{color:var(--black)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.85rem;color:rgba(255,255,255,.85);text-decoration:none;letter-spacing:.02em;transition:color var(--fast)}
+nav.scrolled .nav-links a{color:var(--muted)}
+.nav-links a:hover{color:var(--gold)!important}
+.nav-cta{background:var(--gold);color:#fff!important;padding:.55rem 1.4rem;border-radius:50px;font-weight:500!important;font-size:.82rem!important}
+.nav-cta:hover{background:#b0904f!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+.hamburger span{width:22px;height:1.5px;background:#fff;display:block;transition:var(--ease)}
+nav.scrolled .hamburger span{background:var(--black)}
+
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0;z-index:999;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--black);text-decoration:none}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--black)}
+
+/* HERO */
+#hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.2) 50%,rgba(0,0,0,.6) 100%),url('https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?w=1600&q=80') center/cover no-repeat;transform:scale(1.04);transition:transform .1s linear}
+.hero-content{position:relative;z-index:2;text-align:center;padding:0 1.5rem;max-width:820px;animation:fadeUp .9s .2s both}
+.hero-eyebrow{font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
+.hero-title{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:300;color:#fff;line-height:1.08;letter-spacing:-.02em;margin-bottom:1.2rem}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,.75);font-weight:300;margin-bottom:3rem;line-height:1.6}
+
+/* SEARCH BAR */
+.search-glass{background:rgba(255,255,255,.12);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.22);border-radius:var(--r4);padding:.5rem;display:flex;align-items:stretch;max-width:700px;margin:0 auto;flex-wrap:wrap}
+.sf{flex:1;min-width:140px;display:flex;flex-direction:column;padding:.6rem 1.2rem;border-right:1px solid rgba(255,255,255,.15)}
+.sf:last-of-type{border-right:none}
+.sf label{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:.2rem}
+.sf input,.sf select{background:transparent;border:none;outline:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:.88rem}
+.sf select option{color:#000}
+.sf input::placeholder{color:rgba(255,255,255,.45)}
+.search-btn{background:var(--gold);border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;padding:.75rem 1.8rem;border-radius:var(--r3);cursor:pointer;transition:background var(--fast),transform var(--fast);white-space:nowrap;margin:.35rem;align-self:center}
+.search-btn:hover{background:#b0904f;transform:scale(1.03)}
+
+/* SCROLL INDICATOR */
+.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(255,255,255,.5);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;animation:bounce 2.5s infinite}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,.5),transparent)}
+
+/* SECTIONS */
+section{padding:7rem 5%}
+.section-label{font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.section-title{font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:300;line-height:1.12;letter-spacing:-.02em;color:var(--black);margin-bottom:1rem}
+.section-title em{font-style:italic}
+.section-desc{font-size:1rem;color:var(--muted);font-weight:300;line-height:1.7;max-width:520px}
+.gold-line{width:40px;height:1px;background:var(--gold);margin-bottom:1.5rem}
+
+/* STATS */
+#stats{padding:3rem 5%;background:var(--black);display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:2rem}
+.stat-item{text-align:center}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--gold);line-height:1;display:block}
+.stat-label{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:.4rem}
+
+/* PROPERTIES */
+#properties{background:var(--soft-gray)}
+.props-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:1.5rem}
+.filter-tabs{display:flex;gap:.5rem;flex-wrap:wrap}
+.ftab{padding:.45rem 1.1rem;border-radius:50px;border:1px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--muted);cursor:pointer;transition:all var(--fast)}
+.ftab.active,.ftab:hover{background:var(--black);color:#fff;border-color:var(--black)}
+.props-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.8rem}
+
+/* PROPERTY CARD */
+.pcard{background:#fff;border-radius:var(--r3);overflow:hidden;cursor:pointer;transition:transform var(--ease),box-shadow var(--ease);box-shadow:0 2px 20px rgba(0,0,0,.05)}
+.pcard:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.12)}
+.cimg{position:relative;overflow:hidden;aspect-ratio:4/3}
+.cimg img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;display:block}
+.pcard:hover .cimg img{transform:scale(1.07)}
+.cbadge{position:absolute;top:1rem;left:1rem;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:50px;padding:.3rem .8rem;font-size:.7rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--black)}
+.cbadge.sold{background:rgba(198,169,105,.9);color:#fff}
+.cfav{position:absolute;top:1rem;right:1rem;width:36px;height:36px;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;transition:transform var(--fast)}
+.cfav:hover{transform:scale(1.15)}
+.cbody{padding:1.4rem 1.6rem 1.6rem}
+.cname{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--black);margin-bottom:.3rem}
+.cloc{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:.35rem;margin-bottom:1rem}
+.cmeta{display:flex;gap:1.2rem;margin-bottom:1.2rem;font-size:.8rem;color:var(--muted)}
+.cmeta span{display:flex;align-items:center;gap:.35rem}
+.cfoot{display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--border)}
+.cprice{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--black)}
+.cprice small{font-family:'DM Sans',sans-serif;font-size:.75rem;color:var(--muted);font-weight:300}
+.cbtn{padding:.5rem 1.1rem;background:transparent;border:1px solid var(--black);border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:500;color:var(--black);cursor:pointer;transition:all var(--fast)}
+.cbtn:hover{background:var(--black);color:#fff}
+
+/* ABOUT */
+#about{background:#fff;overflow:hidden}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+.aimg-wrap{position:relative;border-radius:var(--r3);overflow:hidden;aspect-ratio:4/5}
+.aimg-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.aimg-badge{position:absolute;bottom:2rem;right:-1.5rem;background:#fff;border-radius:var(--r2);padding:1.2rem 1.5rem;box-shadow:0 20px 50px rgba(0,0,0,.1);text-align:center;min-width:160px}
+.aimg-badge .bnum{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--gold);line-height:1;display:block}
+.aimg-badge .blbl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.atext p{color:var(--muted);font-weight:300;line-height:1.85;margin-bottom:1.2rem;font-size:1rem}
+.asig{margin-top:2.5rem;display:flex;align-items:center;gap:1rem}
+.asig img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--gold-lt);display:block}
+.asig strong{display:block;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:500;color:var(--black)}
+.asig span{font-size:.78rem;color:var(--muted)}
+
+/* WHY */
+#why{background:var(--soft-gray)}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:4rem}
+.wcard{background:#fff;border-radius:var(--r3);padding:2.2rem 2rem;transition:transform var(--ease),box-shadow var(--ease);border:1px solid transparent}
+.wcard:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.08);border-color:var(--gold-lt)}
+.wicon{width:52px;height:52px;background:linear-gradient(135deg,#f7f0e4,#ecdbb8);border-radius:var(--r1);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem}
+.wtitle{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;color:var(--black);margin-bottom:.7rem}
+.wdesc{font-size:.88rem;color:var(--muted);line-height:1.7;font-weight:300}
+
+/* TESTIMONIALS */
+#testimonials{background:var(--black);padding:7rem 5%}
+#testimonials .section-title{color:#fff}
+#testimonials .section-label{color:var(--gold)}
+.tslider{overflow:hidden;margin-top:4rem}
+.ttrack{display:flex;transition:transform .6s cubic-bezier(.25,.46,.45,.94);gap:1.5rem}
+.tcard{min-width:calc(50% - .75rem);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--r3);padding:2.5rem;flex-shrink:0}
+.tstars{color:var(--gold);font-size:.85rem;letter-spacing:.1em;margin-bottom:1.5rem}
+.tquote{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:300;color:rgba(255,255,255,.88);line-height:1.75;font-style:italic;margin-bottom:2rem}
+.tauthor{display:flex;align-items:center;gap:1rem}
+.tauthor img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(198,169,105,.4);display:block}
+.tname{font-weight:500;color:#fff;font-size:.95rem;display:block}
+.trole{font-size:.78rem;color:rgba(255,255,255,.45)}
+.tdots{display:flex;justify-content:center;gap:.5rem;margin-top:2.5rem}
+.tdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);border:none;cursor:pointer;transition:all var(--fast)}
+.tdot.active{background:var(--gold);width:22px;border-radius:4px}
+
+/* CTA */
+#cta{background:#fff;text-align:center;padding:8rem 5%}
+.cta-title{font-size:clamp(2.5rem,5vw,4.2rem);font-weight:300;line-height:1.1;letter-spacing:-.02em;margin-bottom:1.2rem;color:var(--black)}
+.cta-desc{font-size:1rem;color:var(--muted);font-weight:300;margin-bottom:3rem;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.btn-p{background:var(--black);color:#fff;padding:.85rem 2.2rem;border-radius:50px;border:none;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;text-decoration:none;display:inline-block;transition:transform var(--fast),background var(--fast);letter-spacing:.02em}
+.btn-p:hover{transform:scale(1.04);background:#2d2d30}
+.btn-s{background:transparent;color:var(--black);padding:.85rem 2.2rem;border-radius:50px;border:1.5px solid var(--black);font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;text-decoration:none;display:inline-block;transition:all var(--fast)}
+.btn-s:hover{background:var(--black);color:#fff}
+
+/* FOOTER */
+footer{background:#0a0a0a;color:#fff;padding:5rem 5% 2.5rem}
+.ftop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;padding-bottom:4rem;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:2.5rem}
+.fbrand .flogo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:#fff;letter-spacing:.04em;margin-bottom:1rem;display:block}
+.fbrand p{font-size:.85rem;color:rgba(255,255,255,.4);font-weight:300;line-height:1.7;max-width:280px;margin-bottom:1.5rem}
+.socials{display:flex;gap:.8rem}
+.soc{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);text-decoration:none;font-size:.82rem;transition:all var(--fast)}
+.soc:hover{border-color:var(--gold);color:var(--gold)}
+.fcol h5{font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1.5rem}
+.fcol ul{list-style:none}
+.fcol li{margin-bottom:.8rem}
+.fcol a{color:rgba(255,255,255,.5);text-decoration:none;font-size:.88rem;font-weight:300;transition:color var(--fast)}
+.fcol a:hover{color:#fff}
+.fbot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.fbot p,.fbot a{font-size:.78rem;color:rgba(255,255,255,.22);text-decoration:none}
+.fbot a:hover{color:rgba(255,255,255,.5)}
+.gdot{color:var(--gold);margin:0 .3rem}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:2000;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;opacity:0;pointer-events:none;transition:opacity var(--ease);overflow-y:auto}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:var(--r4);max-width:900px;width:100%;overflow:hidden;transform:translateY(30px) scale(.97);transition:transform var(--ease);position:relative}
+.modal-ov.open .modal{transform:translateY(0) scale(1)}
+.mclose{position:absolute;top:1.2rem;right:1.2rem;z-index:10;width:36px;height:36px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:50%;border:none;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--black);transition:transform var(--fast);line-height:1}
+.mclose:hover{transform:scale(1.1) rotate(90deg)}
+.mcar{position:relative;aspect-ratio:16/8;overflow:hidden}
+.mcar img{width:100%;height:100%;object-fit:cover;display:block}
+.mbody{padding:2.5rem}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.mtitle{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--black)}
+.mloc{font-size:.85rem;color:var(--muted);margin-top:.3rem;display:flex;align-items:center;gap:.35rem}
+.mpricebox{text-align:right}
+.mprice{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--black);line-height:1}
+.mspecs{display:flex;gap:2rem;padding:1.5rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:1.5rem;flex-wrap:wrap}
+.spec-val{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--black);display:block}
+.spec-lbl{font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.mdesc{font-size:.92rem;color:var(--muted);line-height:1.8;font-weight:300;margin-bottom:2rem}
+.mactions{display:flex;gap:1rem;flex-wrap:wrap}
+
+/* ADMIN */
+.admin-ov{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity var(--ease)}
+.admin-ov.open{opacity:1;pointer-events:all}
+.admin-box{background:#fff;border-radius:var(--r4);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;transform:scale(.95);transition:transform var(--ease)}
+.admin-ov.open .admin-box{transform:scale(1)}
+.admin-hd{padding:2rem 2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.admin-hd h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--black)}
+.admin-hd button{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted)}
+.admin-bd{padding:2rem}
+.atabs{display:flex;gap:.5rem;margin-bottom:1.5rem}
+.atab{padding:.4rem 1rem;border-radius:50px;border:1px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;transition:all var(--fast);color:var(--muted)}
+.atab.active{background:var(--black);color:#fff;border-color:var(--black)}
+.apane{display:none}
+.apane.active{display:block}
+.frow{margin-bottom:1.2rem}
+.frow label{display:block;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.frow input,.frow select,.frow textarea{width:100%;padding:.75rem 1rem;border:1px solid var(--border);border-radius:var(--r1);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--txt);background:var(--soft-gray);outline:none;transition:border-color var(--fast)}
+.frow input:focus,.frow select:focus,.frow textarea:focus{border-color:var(--gold)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.asub{width:100%;padding:.9rem;background:var(--black);color:#fff;border:none;border-radius:var(--r2);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;transition:background var(--fast);margin-top:.5rem}
+.asub:hover{background:#2d2d30}
+.alist{margin-top:1rem}
+.aitem{display:flex;justify-content:space-between;align-items:center;padding:1rem;border:1px solid var(--border);border-radius:var(--r1);margin-bottom:.8rem;background:var(--soft-gray)}
+.aitem-name{font-weight:500;font-size:.9rem;color:var(--black)}
+.aitem-sub{font-size:.8rem;color:var(--muted)}
+.aact{display:flex;gap:.5rem}
+.abtn{padding:.3rem .7rem;border-radius:6px;border:1px solid var(--border);background:#fff;font-size:.75rem;cursor:pointer;transition:all var(--fast);color:var(--txt);font-family:'DM Sans',sans-serif}
+.abtn:hover{background:var(--black);color:#fff;border-color:var(--black)}
+.abtn.del:hover{background:#c0392b;border-color:#c0392b}
+
+/* FLOATING BUTTONS */
+.fab-group{position:fixed;bottom:2rem;right:2rem;z-index:999;display:flex;flex-direction:column;gap:.7rem;align-items:center}
+.fab{width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform var(--fast),box-shadow var(--fast)}
+.fab:hover{transform:scale(1.08)}
+.fab-admin{background:var(--black);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.fab-wa{background:#25D366;box-shadow:0 8px 30px rgba(37,211,102,.3);text-decoration:none}
+
+/* DARK TOGGLE */
+.dark-toggle{position:fixed;top:50%;right:0;transform:translateY(-50%);z-index:999;background:var(--black);color:#fff;border:none;padding:.65rem .6rem;cursor:pointer;border-radius:8px 0 0 8px;box-shadow:-4px 0 16px rgba(0,0,0,.15);transition:all var(--fast);display:flex;align-items:center;justify-content:center}
+.dark-toggle:hover{padding-right:.85rem}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+
+/* DARK MODE */
+body.dark{--white:#1a1a1a;--soft-gray:#111;--black:#f5f5f7;--txt:#f5f5f7;--muted:#a1a1a6;--border:rgba(255,255,255,.08)}
+body.dark nav.scrolled{background:rgba(18,18,18,.92)}
+body.dark .pcard{background:#1e1e1e}
+body.dark .wcard{background:#1e1e1e}
+body.dark .modal{background:#1a1a1a}
+body.dark .admin-box{background:#1a1a1a}
+body.dark .frow input,body.dark .frow select,body.dark .frow textarea{background:#222;color:#f5f5f7;border-color:rgba(255,255,255,.1)}
+body.dark .aitem{background:#222;border-color:rgba(255,255,255,.06)}
+body.dark .aimg-badge{background:#1e1e1e}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .about-grid{grid-template-columns:1fr;gap:3rem}
+  .aimg-badge{right:1rem}
+  .ftop{grid-template-columns:1fr 1fr;gap:2.5rem}
+  .tcard{min-width:100%}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+}
+@media(max-width:600px){
+  section{padding:5rem 5%}
+  .search-glass{flex-direction:column;border-radius:var(--r3)}
+  .sf{border-right:none;border-bottom:1px solid rgba(255,255,255,.15)}
+  .sf:last-of-type{border-bottom:none}
+  .search-btn{width:100%;margin:.4rem 0 0;border-radius:var(--r2)}
+  .ftop{grid-template-columns:1fr;gap:2rem}
+  .props-grid{grid-template-columns:1fr}
+  .mbody{padding:1.5rem}
+  .fgrid{grid-template-columns:1fr}
+  .mspecs{gap:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Xxo Estates</a>
+  <ul class="nav-links">
+    <li><a href="#properties">Properties</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#why">Services</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#cta" class="nav-cta">Get Started</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMenu()">&#10005;</button>
+  <a href="#properties" onclick="toggleMenu()">Properties</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#why" onclick="toggleMenu()">Services</a>
+  <a href="#testimonials" onclick="toggleMenu()">Reviews</a>
+  <a href="#cta" onclick="toggleMenu()">Get Started</a>
+</div>
+
+<!-- DARK TOGGLE -->
+<button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">
+  <svg id="dkIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+</button>
+
+<!-- FLOATING BUTTONS -->
+<div class="fab-group">
+  <button class="fab fab-admin" onclick="openAdmin()" title="Admin Panel">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </svg>
+  </button>
+  <a href="https://wa.me/2348012345678" class="fab fab-wa" target="_blank" title="Chat on WhatsApp">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Xxo Estates &middot; Est. 2018</p>
+    <h1 class="hero-title">Find Your Space.<br><em>Own Your Future.</em></h1>
+    <p class="hero-sub">Premium real estate experiences crafted for those who demand more.</p>
+    <div class="search-glass">
+      <div class="sf">
+        <label>Location</label>
+        <input type="text" placeholder="Abuja, Lagos, Port Harcourt&hellip;">
+      </div>
+      <div class="sf">
+        <label>Property Type</label>
+        <select>
+          <option value="">Any Type</option>
+          <option>Apartment</option><option>Duplex</option>
+          <option>Villa</option><option>Penthouse</option><option>Land</option>
+        </select>
+      </div>
+      <div class="sf">
+        <label>Max Budget</label>
+        <select>
+          <option value="">Any Budget</option>
+          <option>Under &#8358;50M</option>
+          <option>&#8358;50M &ndash; &#8358;150M</option>
+          <option>&#8358;150M &ndash; &#8358;500M</option>
+          <option>&#8358;500M+</option>
+        </select>
+      </div>
+      <button class="search-btn" onclick="document.getElementById('properties').scrollIntoView({behavior:'smooth'})">Search</button>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- STATS -->
+<div id="stats">
+  <div class="stat-item reveal"><span class="stat-num">1,240+</span><p class="stat-label">Properties Listed</p></div>
+  <div class="stat-item reveal d1"><span class="stat-num">98%</span><p class="stat-label">Client Satisfaction</p></div>
+  <div class="stat-item reveal d2"><span class="stat-num">7</span><p class="stat-label">Years of Excellence</p></div>
+  <div class="stat-item reveal d3"><span class="stat-num">&#8358;220B+</span><p class="stat-label">Properties Sold</p></div>
+</div>
+
+<!-- PROPERTIES -->
+<section id="properties">
+  <div class="props-header">
+    <div>
+      <p class="section-label reveal">Featured Listings</p>
+      <h2 class="section-title reveal d1">Curated <em>properties</em><br>for discerning buyers</h2>
+    </div>
+    <div class="filter-tabs reveal">
+      <button class="ftab active" data-filter="all">All</button>
+      <button class="ftab" data-filter="apartment">Apartment</button>
+      <button class="ftab" data-filter="duplex">Duplex</button>
+      <button class="ftab" data-filter="villa">Villa</button>
+      <button class="ftab" data-filter="land">Land</button>
+    </div>
+  </div>
+  <div class="props-grid" id="propsGrid"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="aimg-wrap reveal">
+      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Luxury interior" loading="lazy">
+      <div class="aimg-badge">
+        <span class="bnum">7+</span>
+        <span class="blbl">Years of Trust</span>
+      </div>
+    </div>
+    <div class="atext reveal d2">
+      <p class="section-label">Our Story</p>
+      <div class="gold-line"></div>
+      <h2 class="section-title">More than real estate.<br><em>A legacy of trust.</em></h2>
+      <p>Xxo Estates was born from a simple belief &mdash; that finding the perfect home should feel effortless, elegant, and deeply personal. We blend technology, design, and expertise into every transaction.</p>
+      <p>From the gleaming towers of Victoria Island to the serene courts of Maitama, we have guided over 3,000 families home. Our promise: uncompromising quality, absolute transparency, and a relationship that extends well beyond the handshake.</p>
+      <p>Every property in our portfolio is personally vetted. Every client relationship is built on honesty. Every transaction is designed to be seamless.</p>
+      <div class="asig">
+        <img src="" alt="CEO">
+        <div>
+          <strong>Yousuf Xxo</strong>
+          <span>Founder &amp; CEO, Xxo Estates</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section id="why">
+  <div style="text-align:center;max-width:580px;margin:0 auto 1rem">
+    <p class="section-label reveal">Why Xxo Estates</p>
+    <h2 class="section-title reveal d1">Excellence in every<br><em>detail we serve</em></h2>
+    <p class="section-desc reveal d2" style="margin:0 auto">We don&rsquo;t just sell properties &mdash; we architect life experiences around the spaces you call home.</p>
+  </div>
+  <div class="why-grid">
+    <div class="wcard reveal">
+      <div class="wicon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C6A969" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <polyline points="9 12 11 14 15 10"/>
+        </svg>
+      </div>
+      <h3 class="wtitle">Verified Listings Only</h3>
+      <p class="wdesc">Every property undergoes our rigorous 12-point verification process. No surprises, no hidden encumbrances &mdash; just verified, clean titles.</p>
+    </div>
+    <div class="wcard reveal d1">
+      <div class="wicon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C6A969" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <h3 class="wtitle">Trusted Expert Agents</h3>
+      <p class="wdesc">Our agents are ESVAR-certified professionals with deep local market knowledge and a fiduciary duty to your best interest.</p>
+    </div>
+    <div class="wcard reveal d2">
+      <div class="wicon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C6A969" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <h3 class="wtitle">Seamless Process</h3>
+      <p class="wdesc">From discovery to documentation, we handle every step with precision. Digital paperwork, e-signatures, and real-time updates throughout.</p>
+    </div>
+    <div class="wcard reveal d3">
+      <div class="wicon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C6A969" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <h3 class="wtitle">Premium Locations</h3>
+      <p class="wdesc">We curate exclusively in high-appreciation corridors &mdash; Maitama, Asokoro, Lekki Phase 1, GRA Port Harcourt, and beyond.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div style="max-width:520px">
+    <p class="section-label reveal">Client Stories</p>
+    <h2 class="section-title reveal d1">What our clients<br><em>say about us</em></h2>
+  </div>
+  <div class="tslider reveal d2">
+    <div class="ttrack" id="ttrack"></div>
+  </div>
+  <div class="tdots" id="tdots"></div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <p class="section-label reveal">Begin Your Journey</p>
+  <h2 class="cta-title reveal d1">Let&rsquo;s find your<br><em>dream home together</em></h2>
+  <p class="cta-desc reveal d2">Schedule a consultation with one of our expert advisors. No obligation &mdash; just clarity, care, and complete transparency.</p>
+  <div class="cta-btns reveal d3">
+    <button class="btn-p" onclick="openAdmin()">Get Started Today</button>
+    <a href="tel:+2348012345678" class="btn-s">Call Us Now</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ftop">
+    <div class="fbrand">
+      <span class="flogo">Xxo Estates</span>
+      <p>Premium real estate curated for those who value quality, trust, and the art of living well. Serving Nigeria&rsquo;s finest addresses since 2018.</p>
+      <div class="socials">
+        <a href="#" class="soc">in</a>
+        <a href="#" class="soc">tw</a>
+        <a href="#" class="soc">ig</a>
+        <a href="#" class="soc">fb</a>
+        <a href="#" class="soc">yt</a>
+      </div>
+    </div>
+    <div class="fcol">
+      <h5>Properties</h5>
+      <ul>
+        <li><a href="#">Apartments</a></li><li><a href="#">Duplexes</a></li>
+        <li><a href="#">Villas</a></li><li><a href="#">Penthouses</a></li>
+        <li><a href="#">Land</a></li><li><a href="#">Commercial</a></li>
+      </ul>
+    </div>
+    <div class="fcol">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Us</a></li><li><a href="#">Our Agents</a></li>
+        <li><a href="#">Careers</a></li><li><a href="#">Press</a></li>
+        <li><a href="#">Blog</a></li><li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="fcol">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+2347084620690">+234 708 462 0690</a></li>
+        <li><a href="mailto:yusufaliyu167@gmail.com">yusufaliyu167@gmail.com</a></li>
+        <li><a href="#">Plot 14, Maitama, Abuja</a></li>
+        <li><a href="#">Mon &ndash; Sat: 8am &ndash; 6pm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fbot">
+    <p>&copy; 2026 Xxo Estates. All rights reserved.<span class="gdot">&middot;</span>Premium Real Estate Nigeria</p>
+    <p><a href="#">Privacy</a><span class="gdot">&middot;</span><a href="#">Terms</a><span class="gdot">&middot;</span><a href="#">Cookies</a></p>
+  </div>
+</footer>
+
+<!-- PROPERTY MODAL -->
+<div class="modal-ov" id="propModal" onclick="closeModalBg(event)">
+  <div class="modal">
+    <button class="mclose" onclick="closePropModal()">&#10005;</button>
+    <div class="mcar"><img id="mImg" src="" alt="Property"></div>
+    <div class="mbody">
+      <div class="mhead">
+        <div>
+          <h2 class="mtitle" id="mTitle"></h2>
+          <p class="mloc">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C6A969" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span id="mLocTxt"></span>
+          </p>
+        </div>
+        <div class="mpricebox">
+          <div class="mprice" id="mPrice"></div>
+          <div style="font-size:.78rem;color:var(--muted)">Asking Price</div>
+        </div>
+      </div>
+      <div class="mspecs">
+        <div><span class="spec-val" id="mBeds"></span><span class="spec-lbl">Bedrooms</span></div>
+        <div><span class="spec-val" id="mBaths"></span><span class="spec-lbl">Bathrooms</span></div>
+        <div><span class="spec-val" id="mSize"></span><span class="spec-lbl">Sq Metres</span></div>
+        <div><span class="spec-val" id="mYear"></span><span class="spec-lbl">Year Built</span></div>
+      </div>
+      <p class="mdesc" id="mDesc"></p>
+      <div class="mactions">
+        <button class="btn-p" onclick="alert('Our agent will contact you within 24 hours to schedule your visit.')">Schedule a Visit</button>
+        <a href="https://wa.me/2348012345678" class="btn-s" target="_blank">WhatsApp Agent</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-ov" id="adminOv" onclick="closeAdminBg(event)">
+  <div class="admin-box">
+    <div class="admin-hd">
+      <h3>Admin Dashboard</h3>
+      <button onclick="closeAdmin()">&#10005;</button>
+    </div>
+    <div class="admin-bd">
+      <div class="atabs">
+        <button class="atab active" onclick="switchTab('add',this)">Add Listing</button>
+        <button class="atab" onclick="switchTab('manage',this)">Manage Listings</button>
+      </div>
+      <div class="apane active" id="tab-add">
+        <div class="frow"><label>Property Name</label><input type="text" id="aName" placeholder="e.g. The Meridian Residences"></div>
+        <div class="fgrid">
+          <div class="frow"><label>Price (&#8358;)</label><input type="text" id="aPrice" placeholder="85,000,000"></div>
+          <div class="frow"><label>Location</label><input type="text" id="aLoc" placeholder="e.g. Maitama, Abuja"></div>
+        </div>
+        <div class="fgrid">
+          <div class="frow"><label>Bedrooms</label><input type="number" id="aBeds" placeholder="4" min="1"></div>
+          <div class="frow"><label>Bathrooms</label><input type="number" id="aBaths" placeholder="3" min="1"></div>
+        </div>
+        <div class="fgrid">
+          <div class="frow"><label>Size (m&sup2;)</label><input type="number" id="aSize" placeholder="320"></div>
+          <div class="frow"><label>Type</label>
+            <select id="aType">
+              <option>apartment</option><option>duplex</option><option>villa</option><option>land</option>
+            </select>
+          </div>
+        </div>
+        <div class="frow"><label>Image URL</label><input type="text" id="aImg" placeholder="https://..."></div>
+        <div class="frow"><label>Description</label><textarea id="aDesc" rows="3" placeholder="Brief property description..."></textarea></div>
+        <button class="asub" onclick="addListing()">Add Listing</button>
+      </div>
+      <div class="apane" id="tab-manage">
+        <div class="alist" id="adminList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── PROPERTY DATA ──
+var props = [
+  {id:1,name:"The Meridian Penthouse",loc:"Maitama, Abuja",price:"&#8358;320,000,000",type:"apartment",beds:5,baths:6,size:580,year:2023,status:"available",img:"https://images.unsplash.com/photo-1600607687939-ce8a6d2d14e0?w=600&q=80",desc:"An extraordinary penthouse commanding panoramic views of the capital. Finished with Italian marble, Miele appliances, and a private rooftop terrace — this is Abuja living at its finest."},
+  {id:2,name:"Lekki Pearl Estate",loc:"Lekki Phase 1, Lagos",price:"&#8358;185,000,000",type:"duplex",beds:4,baths:5,size:420,year:2022,status:"available",img:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80",desc:"A stunning 4-bedroom duplex in the heart of Lekki, featuring a private pool, smart home automation, and exquisite contemporary finishes throughout."},
+  {id:3,name:"Asokoro Grand Villa",loc:"Asokoro, Abuja",price:"&#8358;550,000,000",type:"villa",beds:6,baths:7,size:820,year:2021,status:"available",img:"https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80",desc:"Situated on a half-hectare plot in Abuja's most prestigious district, this grand villa offers six en-suite bedrooms, a cinema room, a gym, and a 15-metre infinity pool."},
+  {id:4,name:"Harmony Heights",loc:"GRA, Port Harcourt",price:"&#8358;95,000,000",type:"apartment",beds:3,baths:3,size:240,year:2024,status:"sold",img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80",desc:"A beautifully appointed 3-bedroom apartment in Port Harcourt's most coveted GRA address. Floor-to-ceiling glazing, a balcony garden, and premium fixtures throughout."},
+  {id:5,name:"Victoria Waterfront",loc:"Victoria Island, Lagos",price:"&#8358;1,200,000,000",type:"villa",beds:7,baths:8,size:1200,year:2020,status:"available",img:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80",desc:"An architectural masterpiece on the Lagos waterfront. Seven en-suite bedrooms, a private jetty, home theatre, staff quarters, and uninterrupted Atlantic Ocean views."},
+  {id:6,name:"Jabi Lakeside Duplex",loc:"Jabi, Abuja",price:"&#8358;75,000,000",type:"duplex",beds:3,baths:4,size:310,year:2023,status:"available",img:"https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80",desc:"Overlooking the serene Jabi Lake, this contemporary duplex blends natural light, open-plan living, and high-specification finishes into an utterly liveable family home."}
+];
+
+var testimonials = [
+  {q:"Xxo Estates changed how I think about buying property. From the very first consultation to the day I received my keys, every interaction was immaculate. Professional doesn't even begin to describe them.",stars:"&#9733;&#9733;&#9733;&#9733;&#9733;",name:"Adaeze Okonkwo",role:"COO, Meridian Group &middot; Abuja",av:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80"},
+  {q:"I've purchased three properties through various agents — none compare to the Xxo experience. Verified titles, zero surprises, and an agent who genuinely cared about my family's needs.",stars:"&#9733;&#9733;&#9733;&#9733;&#9733;",name:"Chukwuemeka Dike",role:"Entrepreneur &middot; Lagos",av:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"},
+  {q:"The process was so smooth I assumed something would go wrong. Nothing did. Xxo Estates handled everything with grace and precision. We moved in six weeks after viewing.",stars:"&#9733;&#9733;&#9733;&#9733;&#9733;",name:"Fatima Al-Hassan",role:"Medical Director &middot; Abuja",av:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80"},
+  {q:"Their recommendations actually worked — suggested a property I wouldn't have considered, and now I can't imagine living anywhere else. Truly a premium experience end to end.",stars:"&#9733;&#9733;&#9733;&#9733;&#9733;",name:"Oluwaseun Adeleke",role:"Tech Executive &middot; Lagos",av:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80"}
+];
+
+// ── SVG ICON CONSTANTS ──
+var ICpin  = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#C6A969" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+var ICbed  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>';
+var ICbath = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16a1 1 0 0 1 1 1v3a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-3a1 1 0 0 1 1-1z"/><path d="M6 12V5a2 2 0 0 1 2-2h3v2.25"/><line x1="4" y1="21" x2="4" y2="22"/><line x1="20" y1="21" x2="20" y2="22"/></svg>';
+var ICarea = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
+var ICheartOff = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+var ICheartOn  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="#C6A969" stroke="#C6A969" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+
+// ── RENDER PROPERTIES ──
+function renderProps(filter) {
+  if (!filter) filter = 'all';
+  var grid = document.getElementById('propsGrid');
+  var list = (filter === 'all') ? props : props.filter(function(p){ return p.type === filter; });
+  var out = '';
+  for (var i = 0; i < list.length; i++) {
+    var p = list[i];
+    var cap = p.type.charAt(0).toUpperCase() + p.type.slice(1);
+    out += '<div class="pcard" onclick="openPropModal(' + p.id + ')">'
+      + '<div class="cimg">'
+        + '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy">'
+        + '<span class="cbadge' + (p.status === 'sold' ? ' sold' : '') + '">' + (p.status === 'sold' ? 'Sold' : cap) + '</span>'
+        + '<button class="cfav" data-fav="0" onclick="event.stopPropagation();toggleFav(this)">' + ICheartOff + '</button>'
+      + '</div>'
+      + '<div class="cbody">'
+        + '<h3 class="cname">' + p.name + '</h3>'
+        + '<p class="cloc">' + ICpin + p.loc + '</p>'
+        + '<div class="cmeta">'
+          + '<span>' + ICbed + p.beds + ' Beds</span>'
+          + '<span>' + ICbath + p.baths + ' Baths</span>'
+          + '<span>' + ICarea + p.size + 'm&sup2;</span>'
+        + '</div>'
+        + '<div class="cfoot">'
+          + '<div class="cprice">' + p.price + ' <small>Asking</small></div>'
+          + '<button class="cbtn">View Details</button>'
+        + '</div>'
+      + '</div>'
+    + '</div>';
+  }
+  grid.innerHTML = out;
+  initReveal();
+}
+
+// ── RENDER TESTIMONIALS ──
+function renderTestimonials() {
+  var track = document.getElementById('ttrack');
+  var dots  = document.getElementById('tdots');
+  var out = '';
+  for (var i = 0; i < testimonials.length; i++) {
+    var t = testimonials[i];
+    out += '<div class="tcard">'
+      + '<div class="tstars">' + t.stars + '</div>'
+      + '<p class="tquote">&ldquo;' + t.q + '&rdquo;</p>'
+      + '<div class="tauthor"><img src="' + t.av + '" alt="' + t.name + '" loading="lazy"><div><span class="tname">' + t.name + '</span><span class="trole">' + t.role + '</span></div></div>'
+    + '</div>';
+  }
+  track.innerHTML = out;
+  var nd = Math.ceil(testimonials.length / 2);
+  var dout = '';
+  for (var j = 0; j < nd; j++) {
+    dout += '<button class="tdot' + (j === 0 ? ' active' : '') + '" onclick="goSlide(' + j + ')"></button>';
+  }
+  dots.innerHTML = dout;
+}
+
+var curSlide = 0;
+function goSlide(i) {
+  curSlide = i;
+  var track = document.getElementById('ttrack');
+  var cards = track.querySelectorAll('.tcard');
+  if (!cards.length) return;
+  var w = cards[0].offsetWidth + 24;
+  track.style.transform = 'translateX(-' + (i * w * 2) + 'px)';
+  document.querySelectorAll('.tdot').forEach(function(d, idx){ d.classList.toggle('active', idx === i); });
+}
+
+setInterval(function() {
+  var max = Math.ceil(testimonials.length / 2) - 1;
+  goSlide(curSlide >= max ? 0 : curSlide + 1);
+}, 5500);
+
+// ── FILTER TABS ──
+document.querySelectorAll('.ftab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.ftab').forEach(function(t){ t.classList.remove('active'); });
+    this.classList.add('active');
+    renderProps(this.getAttribute('data-filter'));
+  });
+});
+
+// ── PROPERTY MODAL ──
+function openPropModal(id) {
+  var p = null;
+  for (var i = 0; i < props.length; i++) { if (props[i].id === id) { p = props[i]; break; } }
+  if (!p) return;
+  document.getElementById('mImg').src = p.img;
+  document.getElementById('mTitle').textContent = p.name;
+  document.getElementById('mLocTxt').textContent = p.loc;
+  document.getElementById('mPrice').innerHTML = p.price;
+  document.getElementById('mBeds').textContent = p.beds;
+  document.getElementById('mBaths').textContent = p.baths;
+  document.getElementById('mSize').textContent = p.size;
+  document.getElementById('mYear').textContent = p.year;
+  document.getElementById('mDesc').textContent = p.desc;
+  document.getElementById('propModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePropModal() {
+  document.getElementById('propModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalBg(e) {
+  if (e.target === document.getElementById('propModal')) closePropModal();
+}
+
+// ── ADMIN ──
+function openAdmin() {
+  document.getElementById('adminOv').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderAdminList();
+}
+function closeAdmin() {
+  document.getElementById('adminOv').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeAdminBg(e) {
+  if (e.target === document.getElementById('adminOv')) closeAdmin();
+}
+function switchTab(tab, btn) {
+  document.querySelectorAll('.atab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.apane').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'manage') renderAdminList();
+}
+function addListing() {
+  var name  = document.getElementById('aName').value.trim();
+  var price = document.getElementById('aPrice').value.trim();
+  var loc   = document.getElementById('aLoc').value.trim();
+  if (!name || !price || !loc) { alert('Please fill in Name, Price and Location.'); return; }
+  var newId = props.reduce(function(m, p){ return Math.max(m, p.id); }, 0) + 1;
+  props.push({
+    id: newId, name: name, loc: loc,
+    price: '&#8358;' + price,
+    type:  document.getElementById('aType').value,
+    beds:  parseInt(document.getElementById('aBeds').value)  || 3,
+    baths: parseInt(document.getElementById('aBaths').value) || 3,
+    size:  parseInt(document.getElementById('aSize').value)  || 200,
+    year: 2025, status: 'available',
+    img:  document.getElementById('aImg').value.trim() || 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80',
+    desc: document.getElementById('aDesc').value.trim()
+  });
+  renderProps(document.querySelector('.ftab.active').getAttribute('data-filter'));
+  ['aName','aPrice','aLoc','aBeds','aBaths','aSize','aImg','aDesc'].forEach(function(id){ document.getElementById(id).value = ''; });
+  alert('"' + name + '" has been added successfully!');
+}
+function renderAdminList() {
+  var el = document.getElementById('adminList');
+  var out = '';
+  for (var i = 0; i < props.length; i++) {
+    var p = props[i];
+    out += '<div class="aitem">'
+      + '<div><div class="aitem-name">' + p.name + '</div><div class="aitem-sub">' + p.price + ' &middot; ' + p.loc + '</div></div>'
+      + '<div class="aact">'
+        + '<button class="abtn" onclick="toggleSold(' + p.id + ')">' + (p.status === 'sold' ? 'Relist' : 'Mark Sold') + '</button>'
+        + '<button class="abtn del" onclick="delListing(' + p.id + ')">Delete</button>'
+      + '</div>'
+    + '</div>';
+  }
+  el.innerHTML = out;
+}
+function toggleSold(id) {
+  for (var i = 0; i < props.length; i++) {
+    if (props[i].id === id) { props[i].status = (props[i].status === 'sold') ? 'available' : 'sold'; break; }
+  }
+  renderAdminList();
+  renderProps(document.querySelector('.ftab.active').getAttribute('data-filter'));
+}
+function delListing(id) {
+  if (!confirm('Delete this listing permanently?')) return;
+  props = props.filter(function(p){ return p.id !== id; });
+  renderAdminList();
+  renderProps(document.querySelector('.ftab.active').getAttribute('data-filter'));
+}
+
+// ── FAVOURITE TOGGLE ──
+function toggleFav(btn) {
+  var on = btn.getAttribute('data-fav') === '1';
+  btn.setAttribute('data-fav', on ? '0' : '1');
+  btn.innerHTML = on ? ICheartOff : ICheartOn;
+}
+
+// ── SCROLL REVEAL ──
+function initReveal() {
+  if (!window.IntersectionObserver) {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.reveal:not(.visible)').forEach(function(el){ obs.observe(el); });
+}
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', function() {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  document.getElementById('heroBg').style.transform = 'scale(1.04) translateY(' + Math.min(window.scrollY * 0.22, 80) + 'px)';
+});
+
+// ── DARK MODE ──
+function toggleDark() {
+  var dark = document.body.classList.toggle('dark');
+  document.getElementById('dkIcon').innerHTML = dark
+    ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+
+// ── MOBILE MENU ──
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// ── INIT ──
+renderProps();
+renderTestimonials();
+initReveal();
+</script>
+</body>
+</html>
